@@ -50,4 +50,7 @@ public class Employee {
         return id;
     }
 
+    public String getFullName() {
+        return this.firstName+" "+this.lastName;
+    }
 }
