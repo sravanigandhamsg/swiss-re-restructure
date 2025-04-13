@@ -6,31 +6,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StructureAnalyzer {
+    
+    private final Map<Integer, Employee> employeesById = new HashMap<>();
 
-    Map<Integer, Employee> heirarchialEmployees = new HashMap<>();
+    public StructureAnalyzer(Map<Integer, Employee> employeeMap) {
+        buildHierarchy(employeeMap);
+    }
 
-    public StructureAnalyzer(Map<Integer, Employee> employees){
-        //build heirarchy when called
-        for (Employee emp : employees.values()) {
-            if (emp.getManagerId() == null) {
-                System.out.println("CEO: " + emp.getFullName());
+    private void buildHierarchy(Map<Integer, Employee> employeeMap) {
+        for (Employee employee : employeeMap.values()) {
+            if (employee.getManagerId() == null || employee.getManagerId() == -1) {
+                System.out.println("CEO: " + employee.getFullName());
             } else {
-                Employee manager = employees.get(emp.getManagerId());
+                Employee manager = employeeMap.get(employee.getManagerId());
                 if (manager != null) {
-                    manager.getSubordinates().add(emp);
+                    manager.getSubordinates().add(employee);
                 }
             }
         }
-
-        heirarchialEmployees.putAll(employees);
+        employeesById.putAll(employeeMap);
     }
 
 
     public void printManagerSalaryCompliance(){
-        System.out.println("Managers earning less or more than they should:");
         Map<Integer, String> managersWithLessSalary = new HashMap<>();
         Map<Integer, String> managersWithMoreSalary = new HashMap<>();
-        for (Employee emp : heirarchialEmployees.values()) {
+        for (Employee emp : employeesById.values()) {
             if (!emp.getSubordinates().isEmpty()) {
                 double avgSubSalary = emp.getSubordinates().stream()
                         .mapToDouble(Employee::getSalary)
@@ -68,12 +69,12 @@ public class StructureAnalyzer {
     }
 
     public void printEmployeesWithLongReportingLines(){
-        System.out.println("\nEmployees with too long reporting lines:");
-        for (Employee emp : heirarchialEmployees.values()) {
+        System.out.println("\nEmployees with long reporting chains (>4 levels):");
+        for (Employee employee : employeesById.values()) {
             int depth = 0;
-            Employee current = emp;
+            Employee current = employee;
             while (current.getManagerId() != -1) {
-                Employee manager = heirarchialEmployees.get(current.getManagerId());
+                Employee manager = employeesById.get(current.getManagerId());
                 if (manager == null) {
                     System.out.printf("⚠ Warning: Employee with ID %s not found",
                             current.getManagerId());
@@ -84,7 +85,7 @@ public class StructureAnalyzer {
             }
             if (depth > 4) {
                 System.out.printf("Employee Name: %s, Managers Above: %d, Exceeds By: %d%n",
-                        emp.getFullName(), depth, depth - 4);
+                        employee.getFullName(), depth, depth - 4);
             }
         }
     }

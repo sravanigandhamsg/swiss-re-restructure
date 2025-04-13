@@ -8,30 +8,31 @@ import java.util.*;
 public class CSVReader {
 
     public Map<Integer, Employee> readCSV(String filePath) throws IOException {
-        System.out.println("Reading csv from :"+ filePath);
+        System.out.println("Reading CSV from: " + filePath);
 
-        Map<Integer, Employee> data = new HashMap<>();
+        Map<Integer, Employee> employeeMap = new HashMap<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            br.readLine(); // to skip header
+            reader.readLine(); // to skip header
 
-            while ((line = br.readLine()) != null) {
-                String[] row = line.split(",");
-                if(row.length>5){
-                    System.out.println("row length is not correct for line : "+line);
-                }else{
-                    if(row.length==4){
-                        Employee emp = new Employee(Integer.parseInt(row[0]), row[1],row[2],Double.parseDouble(row[3]), -1);
-                        data.put(Integer.parseInt(row[0]),emp);
-                    }else{
-                        Employee emp = new Employee(Integer.parseInt(row[0]), row[1],row[2],Double.parseDouble(row[3]), Integer.parseInt(row[4]));
-                        data.put(Integer.parseInt(row[0]),emp);
-                    }
+            while ((line = reader.readLine()) != null) {
+                String[] tokens = line.split(",");
+                if(tokens.length>5){
+                    System.out.println("⚠ Invalid row: " + line);
+                    continue;
                 }
+                int id = Integer.parseInt(tokens[0]);
+                String firstName = tokens[1];
+                String lastName = tokens[2];
+                double salary = Double.parseDouble(tokens[3]);
+                int managerId = (tokens.length == 4 || tokens[4].isBlank()) ? -1 : Integer.parseInt(tokens[4]);
+
+                employeeMap.put(id, new Employee(id, firstName, lastName, salary, managerId));
+
             }
         }
-        return data;
+        return employeeMap;
     }
 
 }
