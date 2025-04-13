@@ -9,17 +9,21 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        if (args.length != 1) {
+            System.out.println("Usage: java -jar <jar-file> <csv-file-path>");
+            return;
+        }
+
+        String csvFilePath = args[0];
         CSVReader reader = new CSVReader();
         try {
-            Map<Integer, Employee> data =
-                    reader.readCSV("/Users/sravani.gandhamthoughtworks.com/Documents/ADP/PKL/swiss-re-restructure/Employees.csv");
-            System.out.println(data.toString());
-            StructureAnalyzer analyzer = new StructureAnalyzer(data);
+            Map<Integer, Employee> employees = reader.readCSV(csvFilePath);
+            StructureAnalyzer analyzer = new StructureAnalyzer(employees);
             analyzer.printManagerSalaryCompliance();
             analyzer.printEmployeesWithLongReportingLines();
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error reading CSV: " + e.getMessage());
         }
 
     }

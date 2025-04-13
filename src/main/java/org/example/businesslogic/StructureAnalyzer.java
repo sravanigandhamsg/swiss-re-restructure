@@ -43,11 +43,11 @@ public class StructureAnalyzer {
                 if (emp.getSalary() < minSalary) {
                     double shortfall = minSalary - emp.getSalary();
                     managersWithLessSalary.put(emp.getId(),
-                            String.format("Manager Name: %s, Less Amount: %.2f", emp.getFullName(), shortfall));
+                            String.format("Manager: %s, Underpaid by: %.2f", emp.getFullName(), shortfall));
                 } else if (emp.getSalary() > maxSalary) {
                     double excess = emp.getSalary() - maxSalary;
                     managersWithMoreSalary.put(emp.getId(),
-                            String.format("Manager Name: %s, Excess Amount: %.2f", emp.getFullName(), excess));
+                            String.format("Manager: %s, Overpaid by: %.2f", emp.getFullName(), excess));
                 }
             }
         }
@@ -84,7 +84,7 @@ public class StructureAnalyzer {
                 current = manager;
             }
             if (depth > 4) {
-                System.out.printf("Employee Name: %s, Managers Above: %d, Exceeds By: %d%n",
+                System.out.printf("Employee: %s, Managers Above: %d, Exceeds By: %d%n",
                         employee.getFullName(), depth, depth - 4);
             }
         }

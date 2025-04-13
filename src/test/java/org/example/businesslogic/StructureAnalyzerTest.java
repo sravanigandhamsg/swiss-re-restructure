@@ -54,8 +54,8 @@ class StructureAnalyzerTest {
         String output = outContent.toString();
         System.out.println(output);
 
-        assertTrue(output.contains("Manager Name: Bob Johnson, Less Amount:"), "Should detect underpaid manager");
-        assertTrue(output.contains("Manager Name: Carol White, Excess Amount:"), "Should detect overpaid manager");
+        assertTrue(output.contains("Manager: Bob Johnson, Underpaid by:"), "Should detect underpaid manager");
+        assertTrue(output.contains("Manager: Carol White, Overpaid by:"), "Should detect overpaid manager");
     }
 
     @Test
@@ -64,7 +64,7 @@ class StructureAnalyzerTest {
         analyzer.printEmployeesWithLongReportingLines();
         String output = outContent.toString();
 
-        assertTrue(output.contains("Employee Name: Ian Green, Managers Above: 5, Exceeds By: 1"),
+        assertTrue(output.contains("Employee: Ian Green, Managers Above: 5, Exceeds By: 1"),
                 "Should detect long reporting line for Ian Green");
     }
 
