@@ -10,7 +10,7 @@ This Java application analyzes an employee hierarchy from a CSV file. It detects
 
 ```bash
 # Clone the repository
-$ git clone <repo-url>
+$ git clone https://github.com/sravanigandhamsg/swiss-re-restructure.git
 $ cd swiss-re-restructure
 
 # Build the application using Maven
